@@ -1,10 +1,31 @@
+" Autoload the Vim Plug manager
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Run PLugIntsall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
+
+" Add plugins
+call plug#begin('~/.vim/plugged')
+Plug 'tmsvg/pear-tree'
+Plug 'scrooloose/nerdtree'
+Plug 'itchyny/lightline.vim'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'tomasiser/vim-code-dark'
+call plug#end()
+
 " Basic Vim config
-" Uncomment the lines below for solarized (light theme)
+" Uncomment the below for solarized
 "set background=light
 "let g:solarized_termcolors=256
 "colorscheme solarized
 set background=dark
-colorscheme gruvbox
+colorscheme codedark
 set number relativenumber
 syntax on
 syntax enable
@@ -42,22 +63,3 @@ nmap nt :NERDTreeToggle<CR>
 " Indent guides enabled by default
 "let g:indent_guides_enable_on_vim_startup = 1
 
-" Autoload the Vim Plug manager
-let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
-if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-" Run PlugIntsall if there are missing plugins
-autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  \| PlugInstall --sync | source $MYVIMRC
-\| endif
-
-" Add plugins
-call plug#begin('~/.vim/plugged')
-Plug 'tmsvg/pear-tree'
-Plug 'scrooloose/nerdtree'
-Plug 'itchyny/lightline.vim'
-Plug 'nathanaelkane/vim-indent-guides'
-call plug#end()
